@@ -1,4 +1,4 @@
-// eulerproj project prob81.go
+// https://projecteuler.net/problem=81
 // notes:
 //  2nd problem solved
 //  completed in ~1hr

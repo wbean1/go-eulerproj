@@ -1,4 +1,4 @@
-// eulerproj project prob54.go
+// https://projecteuler.net/problem=54
 // notes:
 //  1st problem solved
 //  took way too long... ~6hr?
