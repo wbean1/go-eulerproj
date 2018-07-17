@@ -1,48 +1,47 @@
 // https://projecteuler.net/problem=56
-// this is wrong and I have no clue why
-// 93^99 seems to give the maximum digital sum of 955...
-// also was a good practice in go type hell
-// (yes, i converted a float -> string -> []string -> []float)
+// fixed this using math/big
+// also added goroutine usage for pro points
 
 package main
 
 import (
 	"fmt"
-	"math"
+	"math/big"
 	"strconv"
-	"strings"
 )
 
+var sums = make(chan int)
+
 func main() {
-	mds := float64(0)
-	for a := 1; a < 100; a++ {
-		for b := 1; b < 100; b++ {
-			power := math.Pow(float64(a), float64(b))
-			fmt.Printf("%d to the %d is: %.f\n", a, b, power)
-			ds := digitalSum(power)
-			fmt.Printf("digitalsum is: %.f\n\n", ds)
-			mds = max(mds, ds)
+	var mds int
+	for a := 90; a < 100; a++ {
+		for b := 90; b < 100; b++ {
+			go func(a, b int) {
+				sums <- digitalSum(a, b)
+			}(a, b)
 		}
 	}
-	fmt.Printf("Answer is: %.f", mds)
+	for i := 0; i < 100; i++ {
+		mds = max(mds, <-sums)
+	}
+	fmt.Printf("Answer is: %d", mds)
 }
 
-func digitalSum(a float64) float64 {
-	str := strings.Split(strconv.FormatFloat(a, 'f', 0, 64), "") // this makes splice of single digit strings?!
-	sum := float64(0)
-	for x := range str {
-		num, err := strconv.ParseFloat(str[x], 64)
-		if err != nil {
-			panic("parse error")
-		}
-		fmt.Printf("%.f +", int)
-		sum = sum + num
+func digitalSum(a, b int) int {
+	bigA := big.NewInt(int64(a))
+	bigB := big.NewInt(int64(b))
+	power := new(big.Int)
+	power.Exp(bigA, bigB, big.NewInt(0))
+	str := power.Text(10)
+	var sum int
+	for _, x := range str {
+		num, _ := strconv.Atoi(string(x))
+		sum += num
 	}
-	fmt.Printf("= %.f", sum)
 	return sum
 }
 
-func max(a, b float64) float64 {
+func max(a, b int) int {
 	if a > b {
 		return a
 	}
