@@ -36,11 +36,7 @@ func ScoreHand(h Hand) float64 {
 	isPair, pairRank := h.isPair()
 	isTwoPair, twoPairRank := h.isTwoPair()
 	if isFlush && isStraight {
-		score += (float64(flushRank) * 1000000000)
-		score += (float64(h.cards[3].value) * 0.01)
-		score += (float64(h.cards[2].value) * 0.0001)
-		score += (float64(h.cards[1].value) * 0.000001)
-		score += (float64(h.cards[0].value) * 0.00000001)
+		score += (float64(straightRank) * 1000000000)
 	} else if isFlush {
 		score += (float64(flushRank) * 1000000)
 		score += (float64(h.cards[3].value) * 0.01)

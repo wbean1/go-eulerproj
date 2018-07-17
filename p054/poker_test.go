@@ -67,6 +67,11 @@ var compareTestCases = []pokerHandCompareCase{
 		winnerHand:  "TH JH QH KH AH",
 		loserHand:   "4H 5H 6H 7H 8H",
 	},
+	{
+		description: "Compare straight flushes",
+		winnerHand:  "4H 5H 6H 7H 8H",
+		loserHand:   "5H 4H 3H 2H AH",
+	},
 }
 
 func TestCompareScoreHand(t *testing.T) {
