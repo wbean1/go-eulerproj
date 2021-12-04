@@ -72,6 +72,11 @@ var compareTestCases = []pokerHandCompareCase{
 		winnerHand:  "4H 5H 6H 7H 8H",
 		loserHand:   "5H 4H 3H 2H AH",
 	},
+	{
+		description: "Compare two pairs",
+		winnerHand:  "QH QS 3H 3S 2C",
+		loserHand:   "QH QS 2H 2S AH",
+	},
 }
 
 func TestCompareScoreHand(t *testing.T) {

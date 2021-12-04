@@ -34,7 +34,7 @@ func ScoreHand(h Hand) float64 {
 	isFourKind, foursRank := h.isFourKind()
 	isThreeKind, threesRank := h.isThreeKind()
 	isPair, pairRank := h.isPair()
-	isTwoPair, twoPairRank := h.isTwoPair()
+	isTwoPair, twoPairRank, twoPairLowRank := h.isTwoPair()
 	if isFlush && isStraight {
 		score += (float64(straightRank) * 1000000000)
 	} else if isFlush {
@@ -54,6 +54,12 @@ func ScoreHand(h Hand) float64 {
 		score += (float64(threesRank) * 10000)
 	} else if isTwoPair {
 		score += (float64(twoPairRank) * 1000)
+		score += (float64(twoPairLowRank) * 10)
+		score += (float64(h.cards[4].value) * 0.01)
+		score += (float64(h.cards[3].value) * 0.0001)
+		score += (float64(h.cards[2].value) * 0.000001)
+		score += (float64(h.cards[1].value) * 0.00000001)
+		score += (float64(h.cards[0].value) * 0.0000000001)
 	} else if isPair {
 		score += (float64(pairRank) * 10)
 		score += (float64(h.cards[4].value) * 0.01)
@@ -131,7 +137,7 @@ func (h *Hand) isThreeKind() (bool, int) {
 	return false, 0
 }
 
-func (h *Hand) isTwoPair() (bool, int) {
+func (h *Hand) isTwoPair() (bool, int, int) {
 	c := [5]int{
 		h.cards[0].value,
 		h.cards[1].value,
@@ -140,20 +146,22 @@ func (h *Hand) isTwoPair() (bool, int) {
 		h.cards[4].value,
 	}
 	numPairFound := 0
+	lowestPair := 0
 	highestPair := 0
 	for i := 2; i < 15; i++ {
 		if howMany(c, i) == 2 {
 			numPairFound++
 			if i > highestPair {
+				lowestPair = highestPair
 				highestPair = i
 			}
 
 		}
 	}
 	if numPairFound == 2 {
-		return true, highestPair
+		return true, highestPair, lowestPair
 	}
-	return false, 0
+	return false, 0, 0
 }
 
 func (h *Hand) isPair() (bool, int) {
